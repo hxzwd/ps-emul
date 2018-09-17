@@ -4,7 +4,7 @@
 #include "pscx_instruction.h"
 #include "string.h"
 #include "stdio.h"
-
+#include <iostream>
 
 // CPU state
 struct Cpu
@@ -70,4 +70,7 @@ struct Cpu
 
 	uint32_t getRegisterValue(uint32_t index) const;
 	void setRegisterValue(uint32_t index, uint32_t value);
+
+	void printDebugInfo(std::string message);
+
 };

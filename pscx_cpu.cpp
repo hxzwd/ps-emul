@@ -11,6 +11,8 @@
     } \
 } while(0)
 
+#define D_DEBUG
+
 uint32_t Cpu::load32(uint32_t addr)
 {
 	return m_inter.load32(addr);
@@ -47,8 +49,34 @@ Cpu::InstructionType Cpu::decodeAndExecute(Instruction instruction)
 		std::cout << "unhandled instruction 0x" << std::hex << instruction.getInstructionCode() << std::endl;
 	}
 
+#ifdef D_DEBUG
+	char tmp_buf[1024] = { 0 };
+	sprintf(tmp_buf, "%X", instruction.m_instruction);
+
+	printDebugInfo("Instruction code is 0x" + std::string(tmp_buf));
+
+	sprintf(tmp_buf, "%X", m_pc);
+
+	printDebugInfo("PC REG: " + std::string(tmp_buf));
+
+	for(int i = 0; i < 32; i++)
+	{
+		sprintf(tmp_buf, "$%d REG: %X", i, m_regs[i]);
+		printDebugInfo(tmp_buf);
+	}
+
+#endif
+
 	return instructionType;
 }
+
+void Cpu::printDebugInfo(std::string message)
+{
+	
+	printf("[DEBUG INFO]:\t%s\n", message.c_str());
+
+}
+
 //??
 //----------------------------------------------
 // TODO : to implement the runNextInstruction function.

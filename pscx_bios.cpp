@@ -6,6 +6,9 @@
 
 #include "stdlib.h"
 #include "stdio.h"
+
+#define D_DEBUG
+
 //??
 //------------------------------------------------
 // TODO : to implement the loadBios function.
@@ -38,21 +41,68 @@ Bios::BiosState Bios::loadBios(std::string path)
 		return BIOS_STATE_INCORRECT_FILENAME;
 	}
 
-	std::vector<uint8_t> data;
+
 
 	size_t num;
 	uint32_t len = m_range.m_length;
+//	uint8_t tmp_bytes[10];
 	uint8_t tmp_byte;
 	size_t size_of_elements = 1;
 	size_t num_of_elements = 1;
+//	size_t num_of_elements = 2;
+	uint32_t counter = 0;
+
+//	uint8_t data[m_range.m_length] = { 0 };
+
+	std::vector<uint8_t> data;
+	m_data.assign(m_range.m_length, 0);
+//	while(len >= 0)
 	while(len--)
 	{
+		
 		num = fread((void *)&tmp_byte, size_of_elements, num_of_elements, file);
-		m_data.push_back(tmp_byte);
+//		uint16_t tmp_value = tmp_byte;
+//		if(counter < 20)
+//			printf("%X\t%X\t%X\t%X\n", tmp_value, tmp_value >> 8, tmp_value << 8, tmp_value >> 8 | tmp_value << 8);
+//		tmp_byte = (uint8_t)(tmp_value >> 8 | tmp_value << 8);
+//		m_data.push_back(tmp_byte);
+		uint32_t pos = counter;
+/*		if(pos % 2 == 0)
+		{
+			pos++;
+		}
+		else
+		{
+			pos--;
+		} */
+//		data[pos] = tmp_byte;
+		m_data[pos] = tmp_byte;
+		counter++;
+//		m_data.push_back(tmp_bytes[1]);
+//		m_data.push_back(tmp_bytes[0]);
+//		len -= 2;
 	}
 
 	fclose(file);
+	
+//	m_data = data;
 
+#ifdef D_DEBUG
+
+	for(int i = 1; i < 31; i++)
+	{
+		printf("%.2X", m_data[i - 1]);
+		if(i % 8 == 0)
+		{
+			printf("\n");
+			continue;
+		}
+		if(i % 4 == 0)
+			printf(" ");
+
+	}
+
+#endif
 
 	if(true)
 	{
